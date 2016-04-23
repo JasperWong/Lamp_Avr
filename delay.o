@@ -1,0 +1,45 @@
+XL
+H 1 areas 2 global symbols
+M delay.c
+A text size 3A flags 0
+dbfile delay.c
+dbfile F:\Project\delay.c
+dbfunc e delay_nms 0 fV
+dbsym r a A c
+dbsym r b 14 c
+dbsym r i 10 c
+dbline FFFFFFFF 4
+dbline 4 4
+dbline 6 4
+dbline 7 8
+dbline 7 C
+dbline 7 C
+dbline 7 E
+dbline 6 12
+dbline 6 14
+dbline FFFFFFFE 18
+dbline 0 18
+dbfunc e delay_nus 1E fV
+dbsym r i 14 i
+dbsym r n 10 i
+dbline FFFFFFFF 22
+dbline B 22
+dbline C 22
+dbline D 22
+dbline E 28
+dbline D 2A
+dbline D 2E
+dbline FFFFFFFE 34
+dbline 0 34
+S _delay_nms Def0000
+S _delay_nus Def001E
+T 00 00 AA 92 4A 93 AA 24 06 C0 41 E0 01 C0 43 95
+R 00 00 00 00
+T 0E 00 44 23 E9 F7 A3 94 A0 16 C0 F3 49 91 A9 90
+R 00 00 00 00
+T 1C 00 08 95
+R 00 00 00 00
+T 1E 00 4A 93 5A 93 44 27 55 27 03 C0 00 00 4F 5F
+R 00 00 00 00
+T 2C 00 5F 4F 40 17 51 07 D0 F3 59 91 49 91 08 95
+R 00 00 00 00

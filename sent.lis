@@ -1,0 +1,97 @@
+                        .module sent.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile sent.c
+ 0000                   .dbfile F:\Project\sent.c
+ 0000                   .dbfunc e hc05_init _hc05_init fV
+                        .even
+ 0000           _hc05_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 4
+ 0000           ; #include"sent.h"
+ 0000           ; 
+ 0000           ; void hc05_init(void)
+ 0000           ; {
+ 0000                   .dbline 5
+ 0000           ;       UCSRA=0X02;             //倍速模式
+ 0000 82E0              ldi R24,2
+ 0002 8BB9              out 0xb,R24
+ 0004                   .dbline 6
+ 0004           ;       UCSRB=0X00;             //清空寄存器
+ 0004 2224              clr R2
+ 0006 2AB8              out 0xa,R2
+ 0008                   .dbline 7
+ 0008           ;       UCSRC=(1<<URSEL)|(0<<UPM0)|(3<<UCSZ0);
+ 0008 86E8              ldi R24,134
+ 000A 80BD              out 0x20,R24
+ 000C                   .dbline 9
+ 000C           ;       //UCSRC=0X06;           //异步 一位停止 八位数据  禁止校验
+ 000C           ;       UBRRL=12;                       //波特率9600                    
+ 000C 8CE0              ldi R24,12
+ 000E 89B9              out 0x9,R24
+ 0010                   .dbline 10
+ 0010           ;       UBRRH=0X00;                     //清空寄存器
+ 0010 20BC              out 0x20,R2
+ 0012                   .dbline 11
+ 0012           ;       UCSRB=(1<<TXEN)|(1<<RXEN)|(1<<RXCIE) ;  //发送使能  接收使能 接收结束中断使能  UCSRB 0X98  0X90
+ 0012 88E9              ldi R24,152
+ 0014 8AB9              out 0xa,R24
+ 0016                   .dbline 12
+ 0016           ;       SREG=0X80;                      //全局中断使能
+ 0016 80E8              ldi R24,128
+ 0018 8FBF              out 0x3f,R24
+ 001A                   .dbline 13
+ 001A           ;       DDRD&=~0X01;            //RX设置为输入
+ 001A 8898              cbi 0x11,0
+ 001C                   .dbline 15
+ 001C           ;       //PORTD|=0X01;          
+ 001C           ;       DDRD|=0X02;                     //TX设置为输出
+ 001C 899A              sbi 0x11,1
+ 001E                   .dbline -2
+ 001E           L1:
+ 001E                   .dbline 0 ; func end
+ 001E 0895              ret
+ 0020                   .dbend
+ 0020                   .dbfunc e sent _sent fV
+ 0020           ;           data -> R16
+                        .even
+ 0020           _sent::
+ 0020                   .dbline -1
+ 0020                   .dbline 19
+ 0020           ; }
+ 0020           ; 
+ 0020           ; void sent(uchar data)
+ 0020           ; {
+ 0020           L3:
+ 0020                   .dbline 20
+ 0020           ;       while ( !( UCSRA & (1<<UDRE)) );                //等待发送缓冲器为空
+ 0020           L4:
+ 0020                   .dbline 20
+ 0020 5D9B              sbis 0xb,5
+ 0022 FECF              rjmp L3
+ 0024           X0:
+ 0024                   .dbline 21
+ 0024           ;       UDR=data;
+ 0024 0CB9              out 0xc,R16
+ 0026           L6:
+ 0026                   .dbline 22
+ 0026           ;       while ( !( UCSRA & (1<<TXC)) );         //检测数据是否清零
+ 0026           L7:
+ 0026                   .dbline 22
+ 0026 5E9B              sbis 0xb,6
+ 0028 FECF              rjmp L6
+ 002A           X1:
+ 002A                   .dbline 23
+ 002A           ;       UCSRA|=TXC;                                                     //清空数据
+ 002A 8BB1              in R24,0xb
+ 002C 8660              ori R24,6
+ 002E 8BB9              out 0xb,R24
+ 0030                   .dbline -2
+ 0030           L2:
+ 0030                   .dbline 0 ; func end
+ 0030 0895              ret
+ 0032                   .dbsym r data 16 c
+ 0032                   .dbend
+ 0032           ; }
+ 0032           ; 
+ 0032           ; 
+ 0032           ; 

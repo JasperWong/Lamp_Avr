@@ -1,0 +1,96 @@
+                        .module MPU_6050.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile MPU_6050.c
+ 0000                   .dbfile F:\lamp\Project\ProjectForavr\MPU_6050.c
+ 0000                   .dbfunc e MPU_6050_init _MPU_6050_init fV
+                        .even
+ 0000           _MPU_6050_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 4
+ 0000           ; #include"MPU_6050.h"
+ 0000           ; 
+ 0000           ; void MPU_6050_init(void)
+ 0000           ; {             
+ 0000                   .dbline 7
+ 0000           ;       //twi_write(PWR_MGMT_1, 0x80);  
+ 0000           ;       //delay_nms(20);
+ 0000           ;       twi_write(PWR_MGMT_1, 0x00);            //解除休眠
+ 0000 2227              clr R18
+ 0002 0BE6              ldi R16,107
+ 0004 0E940000          xcall _twi_write
+ 0008                   .dbline 11
+ 0008           ;       //twi_write(0x23, 0xf8);        
+ 0008           ;       //delay_nms(100);
+ 0008           ;       //twi_write(PWR_MGMT_1, 0x08);  
+ 0008           ;       twi_write(SMPRT_DIV, 0x01);
+ 0008 21E0              ldi R18,1
+ 000A 09E1              ldi R16,25
+ 000C 0E940000          xcall _twi_write
+ 0010                   .dbline 12
+ 0010           ;       twi_write(CONFIG,0x06);
+ 0010 26E0              ldi R18,6
+ 0012 0AE1              ldi R16,26
+ 0014 0E940000          xcall _twi_write
+ 0018                   .dbline 13
+ 0018           ;       twi_write(GYRO_CONFIG, 0x18);
+ 0018 28E1              ldi R18,24
+ 001A 0BE1              ldi R16,27
+ 001C 0E940000          xcall _twi_write
+ 0020                   .dbline 14
+ 0020           ;       twi_write(ACCEL_CONFIG, 0x01);
+ 0020 21E0              ldi R18,1
+ 0022 0CE1              ldi R16,28
+ 0024                   .dbline -2
+ 0024           L1:
+ 0024                   .dbline 0 ; func end
+ 0024 0C940000          xjmp _twi_write
+ 0028                   .dbend
+ 0028                   .dbfunc e Get_data _Get_data fI
+ 0028           ;         L_data -> R10,R11
+ 0028           ;         H_data -> R12,R13
+ 0028           ;    REG_Address -> R20
+                        .even
+ 0028           _Get_data::
+ 0028 0E940000          xcall push_xgset303C
+ 002C 402F              mov R20,R16
+ 002E                   .dbline -1
+ 002E                   .dbline 20
+ 002E           ;       //twi_write(PWR_MGMT_1,0X01); //设置CLKSEL,PLL X轴为参考
+ 002E           ;       //twi_write(PWR_MGMT_2,0X00); //加速度与陀螺仪都工作
+ 002E           ; }
+ 002E           ; 
+ 002E           ; int Get_data(uchar REG_Address)
+ 002E           ; {
+ 002E                   .dbline 23
+ 002E           ;       int H_data;
+ 002E           ;       int L_data;
+ 002E           ;       H_data=twi_read(REG_Address);
+ 002E 042F              mov R16,R20
+ 0030 0E940000          xcall _twi_read
+ 0034 C02E              mov R12,R16
+ 0036 DD24              clr R13
+ 0038                   .dbline 24
+ 0038           ;       L_data=twi_read(REG_Address+1);
+ 0038 042F              mov R16,R20
+ 003A 0F5F              subi R16,255    ; addi 1
+ 003C 0E940000          xcall _twi_read
+ 0040 A02E              mov R10,R16
+ 0042 BB24              clr R11
+ 0044                   .dbline 25
+ 0044           ;       return (H_data<<8)|L_data;
+ 0044 8601              movw R16,R12
+ 0046 102F              mov R17,R16
+ 0048 0027              clr R16
+ 004A 0A29              or R16,R10
+ 004C 1B29              or R17,R11
+ 004E                   .dbline -2
+ 004E           L2:
+ 004E                   .dbline 0 ; func end
+ 004E 0C940000          xjmp pop_xgset303C
+ 0052                   .dbsym r L_data 10 I
+ 0052                   .dbsym r H_data 12 I
+ 0052                   .dbsym r REG_Address 20 c
+ 0052                   .dbend
+ 0052           ; }
+ 0052           ; 
+ 0052           ; 

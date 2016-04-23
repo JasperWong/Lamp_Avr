@@ -1,0 +1,145 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile main.c
+ 0000                   .dbfile F:\lamp\Project\ProjectForavr\main.c
+ 0000                   .dbfunc e main _main fV
+ 0000           ;             AX -> R10,R11
+ 0000           ;             AY -> R20,R21
+                        .even
+ 0000           _main::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"twi.h"
+ 0000           ; #include"delay.h"
+ 0000           ; #include"MPU_6050.h"
+ 0000           ; #include"sent.h"
+ 0000           ; #include"usart.h"
+ 0000           ; 
+ 0000           ; void main(void)
+ 0000           ; {
+ 0000                   .dbline 12
+ 0000           ;       int AX;
+ 0000           ;       int AY;
+ 0000           ;       twi_init();
+ 0000 0E940000          xcall _twi_init
+ 0004                   .dbline 13
+ 0004           ;       delay_nms(50);
+ 0004 02E3              ldi R16,50
+ 0006 0E940000          xcall _delay_nms
+ 000A                   .dbline 14
+ 000A           ;       MPU_6050_init();
+ 000A 0E940000          xcall _MPU_6050_init
+ 000E                   .dbline 15
+ 000E           ;       delay_nms(500);
+ 000E 04EF              ldi R16,244
+ 0010 0E940000          xcall _delay_nms
+ 0014                   .dbline 16
+ 0014           ;       Usart_init();
+ 0014 0E940000          xcall _Usart_init
+ 0018 3AC0              xjmp L3
+ 001A           L2:
+ 001A                   .dbline 19
+ 001A           ;       //hc05_init();
+ 001A           ;       while(1)
+ 001A           ;       {
+ 001A                   .dbline 20
+ 001A           ;               delay_nms(50000);
+ 001A 00E5              ldi R16,80
+ 001C 0E940000          xcall _delay_nms
+ 0020                   .dbline 21
+ 0020           ;               AX=Get_data(ACCEL_XOUT_H)/187.62;
+ 0020 0BE3              ldi R16,59
+ 0022 0E940000          xcall _Get_data
+ 0026 0E940000          xcall int2fp
+ 002A 1801              movw R2,R16
+ 002C 2901              movw R4,R18
+ 002E 00E0              ldi R16,<L5
+ 0030 10E0              ldi R17,>L5
+ 0032 0E940000          xcall lpm32
+ 0036 3A93              st -y,R19
+ 0038 2A93              st -y,R18
+ 003A 1A93              st -y,R17
+ 003C 0A93              st -y,R16
+ 003E 8101              movw R16,R2
+ 0040 9201              movw R18,R4
+ 0042 0E940000          xcall fpdiv2
+ 0046 0E940000          xcall fpint
+ 004A 5801              movw R10,R16
+ 004C                   .dbline 22
+ 004C           ;               AY=Get_data(ACCEL_YOUT_H)/187.62;
+ 004C 0DE3              ldi R16,61
+ 004E 0E940000          xcall _Get_data
+ 0052 0E940000          xcall int2fp
+ 0056 1801              movw R2,R16
+ 0058 2901              movw R4,R18
+ 005A 00E0              ldi R16,<L5
+ 005C 10E0              ldi R17,>L5
+ 005E 0E940000          xcall lpm32
+ 0062 3A93              st -y,R19
+ 0064 2A93              st -y,R18
+ 0066 1A93              st -y,R17
+ 0068 0A93              st -y,R16
+ 006A 8101              movw R16,R2
+ 006C 9201              movw R18,R4
+ 006E 0E940000          xcall fpdiv2
+ 0072 0E940000          xcall fpint
+ 0076 A801              movw R20,R16
+ 0078                   .dbline 24
+ 0078           ;               
+ 0078           ;               if(AY<86)
+ 0078 0635              cpi R16,86
+ 007A E0E0              ldi R30,0
+ 007C 1E07              cpc R17,R30
+ 007E 24F4              brge L6
+ 0080           X0:
+ 0080                   .dbline 25
+ 0080           ;               {
+ 0080                   .dbline 26
+ 0080           ;                       USART_Transmit('1');
+ 0080 01E3              ldi R16,49
+ 0082 0E940000          xcall _USART_Transmit
+ 0086                   .dbline 28
+ 0086           ;                       //UCSRB=0X90;           //关发送使能
+ 0086           ;               }
+ 0086 03C0              xjmp L7
+ 0088           L6:
+ 0088                   .dbline 31
+ 0088           ;               
+ 0088           ;               else 
+ 0088           ;               {
+ 0088                   .dbline 32
+ 0088           ;                       USART_Transmit('0');
+ 0088 00E3              ldi R16,48
+ 008A 0E940000          xcall _USART_Transmit
+ 008E                   .dbline 33
+ 008E           ;               }
+ 008E           L7:
+ 008E                   .dbline 44
+ 008E           ;               /*else
+ 008E           ;               {
+ 008E           ;                       sent('2');
+ 008E           ;                       //UCSRB=0X90;                   //关发送使能
+ 008E           ;                       if(AX<45 || AY<45)
+ 008E           ;                       {
+ 008E           ;                               UCSRB=0X98;             //打开发送使能
+ 008E           ;                       }
+ 008E           ;               }*/
+ 008E           ;               
+ 008E           ;       }
+ 008E           L3:
+ 008E                   .dbline 18
+ 008E C5CF              xjmp L2
+ 0090           X1:
+ 0090                   .dbline -2
+ 0090           L1:
+ 0090                   .dbline 0 ; func end
+ 0090 0895              ret
+ 0092                   .dbsym r AX 10 I
+ 0092                   .dbsym r AY 20 I
+ 0092                   .dbend
+                        .area lit(rom, con, rel)
+ 0000           L5:
+ 0000 B89E3B43          .word 0x9eb8,0x433b
+ 0004           ;       
+ 0004           ; }

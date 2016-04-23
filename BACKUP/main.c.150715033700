@@ -1,0 +1,55 @@
+#include"iom16v.h"
+#include"twi.h"
+#include"delay.h"
+#include"MPU_6050.h"
+#include"sent.h"
+#include"usart.h"
+
+void delay_ms(uint ms)
+{
+	uint i,j;
+	for(i=0; i<ms; i++)
+	{
+		for(j=0; j<1141; j++);
+	}
+}
+
+void main(void)
+{
+	int AX;
+	int AY;
+	twi_init();
+	delay_nms(50);
+	MPU_6050_init();
+	delay_nms(500);
+	Usart_init();
+	//hc05_init();
+	while(1)
+	{
+		delay_ms(10000);
+		AX=Get_data(ACCEL_XOUT_H)/187.62;
+		AY=Get_data(ACCEL_YOUT_H)/187.62;
+		
+		if(AY<86)
+		{
+			USART_Transmit('1');
+			//UCSRB=0X90;        	//关发送使能
+		}
+		
+		else 
+		{
+			USART_Transmit('0');
+		}
+		/*else
+		{
+			sent('2');
+			//UCSRB=0X90;			//关发送使能
+			if(AX<45 || AY<45)
+			{
+				UCSRB=0X98;		//打开发送使能
+			}
+		}*/
+		
+	}
+	
+}

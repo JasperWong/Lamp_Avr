@@ -1,0 +1,1 @@
+delay.o main.o MPU_6050.o sent.o twi.o usart.o 

@@ -1,0 +1,100 @@
+                        .module delay.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile delay.c
+ 0000                   .dbfile F:\Project\delay.c
+ 0000                   .dbfunc e delay_nms _delay_nms fV
+ 0000           ;              a -> R10
+ 0000           ;              b -> R20
+ 0000           ;              i -> R16
+                        .even
+ 0000           _delay_nms::
+ 0000 AA92              st -y,R10
+ 0002 4A93              st -y,R20
+ 0004                   .dbline -1
+ 0004                   .dbline 4
+ 0004           ; #include"delay.h"
+ 0004           ; 
+ 0004           ; void delay_nms(unsigned char i)                       /*定义延时函数*/
+ 0004           ; {
+ 0004                   .dbline 6
+ 0004           ;     unsigned char a,b ;
+ 0004           ;     for(a=0;a<i;a++)
+ 0004 AA24              clr R10
+ 0006 06C0              xjmp L5
+ 0008           L2:
+ 0008                   .dbline 7
+ 0008           ;     for(b=1;b;b++);
+ 0008 41E0              ldi R20,1
+ 000A 01C0              xjmp L9
+ 000C           L6:
+ 000C                   .dbline 7
+ 000C           L7:
+ 000C                   .dbline 7
+ 000C 4395              inc R20
+ 000E           L9:
+ 000E                   .dbline 7
+ 000E 4423              tst R20
+ 0010 E9F7              brne L6
+ 0012           X0:
+ 0012           L3:
+ 0012                   .dbline 6
+ 0012 A394              inc R10
+ 0014           L5:
+ 0014                   .dbline 6
+ 0014 A016              cp R10,R16
+ 0016 C0F3              brlo L2
+ 0018           X1:
+ 0018                   .dbline -2
+ 0018           L1:
+ 0018                   .dbline 0 ; func end
+ 0018 4991              ld R20,y+
+ 001A A990              ld R10,y+
+ 001C 0895              ret
+ 001E                   .dbsym r a 10 c
+ 001E                   .dbsym r b 20 c
+ 001E                   .dbsym r i 16 c
+ 001E                   .dbend
+ 001E                   .dbfunc e delay_nus _delay_nus fV
+ 001E           ;              i -> R20,R21
+ 001E           ;              n -> R16,R17
+                        .even
+ 001E           _delay_nus::
+ 001E 4A93              st -y,R20
+ 0020 5A93              st -y,R21
+ 0022                   .dbline -1
+ 0022                   .dbline 11
+ 0022           ; }
+ 0022           ; 
+ 0022           ; void delay_nus(uint n)       //N us延时函数
+ 0022           ;   {
+ 0022                   .dbline 12
+ 0022           ;    uint i=0;
+ 0022                   .dbline 13
+ 0022           ;    for (i=0;i<n;i++)
+ 0022 4427              clr R20
+ 0024 5527              clr R21
+ 0026 03C0              xjmp L14
+ 0028           L11:
+ 0028                   .dbline 14
+ 0028           ;     asm("nop");
+ 0028 0000              nop
+ 002A           L12:
+ 002A                   .dbline 13
+ 002A 4F5F              subi R20,255  ; offset = 1
+ 002C 5F4F              sbci R21,255
+ 002E           L14:
+ 002E                   .dbline 13
+ 002E 4017              cp R20,R16
+ 0030 5107              cpc R21,R17
+ 0032 D0F3              brlo L11
+ 0034           X2:
+ 0034                   .dbline -2
+ 0034           L10:
+ 0034                   .dbline 0 ; func end
+ 0034 5991              ld R21,y+
+ 0036 4991              ld R20,y+
+ 0038 0895              ret
+ 003A                   .dbsym r i 20 i
+ 003A                   .dbsym r n 16 i
+ 003A                   .dbend
+ 003A           ;   }

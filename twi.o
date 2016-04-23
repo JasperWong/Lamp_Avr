@@ -1,0 +1,160 @@
+XL
+H 1 areas 4 global symbols
+M twi.c
+S _delay_nms Ref0000
+A text size 128 flags 0
+dbfile twi.c
+dbfile F:\Project\twi.c
+dbfunc e twi_init 0 fV
+dbline FFFFFFFF 0
+dbline 6 0
+dbline 7 0
+dbline 8 4
+dbline 9 8
+dbline A A
+dbline B C
+dbline FFFFFFFE 10
+dbline 0 10
+dbfunc e twi_write 12 fc
+dbsym r W_DATA A c
+dbsym r W_ADDRESS C c
+dbline FFFFFFFF 1A
+dbline 18 1A
+dbline 19 1A
+dbline 1A 1E
+dbline 1A 1E
+dbline 1B 24
+dbline 1C 2C
+dbline 1E 30
+dbline 1E 30
+dbline 1E 34
+dbline 1E 38
+dbline 1E 38
+dbline 1F 38
+dbline 1F 38
+dbline 20 3E
+dbline 21 46
+dbline 23 4A
+dbline 23 4A
+dbline 23 4C
+dbline 23 50
+dbline 23 50
+dbline 24 50
+dbline 24 50
+dbline 25 56
+dbline 26 5E
+dbline 28 62
+dbline 28 62
+dbline 28 64
+dbline 28 68
+dbline 28 68
+dbline 29 68
+dbline 29 68
+dbline 2A 6E
+dbline 2B 76
+dbline 2D 7A
+dbline 2E 7E
+dbline 2F 84
+dbline FFFFFFFE 86
+dbline 0 86
+dbfunc e twi_read 8C fc
+dbsym r temp A c
+dbsym r W_ADDRESS 10 c
+dbline FFFFFFFF 8E
+dbline 35 8E
+dbline 37 8E
+dbline 38 92
+dbline 38 92
+dbline 39 98
+dbline 3A A0
+dbline 3C A4
+dbline 3C A4
+dbline 3C A8
+dbline 3C AC
+dbline 3C AC
+dbline 3D AC
+dbline 3D AC
+dbline 3E B2
+dbline 3F BA
+dbline 41 BE
+dbline 41 BE
+dbline 41 C0
+dbline 41 C4
+dbline 41 C4
+dbline 42 C4
+dbline 42 C4
+dbline 43 CA
+dbline 44 D2
+dbline 46 D6
+dbline 47 DA
+dbline 47 DA
+dbline 48 E0
+dbline 49 E8
+dbline 4B EC
+dbline 4B EC
+dbline 4B F0
+dbline 4B F4
+dbline 4B F4
+dbline 4C F4
+dbline 4C F4
+dbline 4D FA
+dbline 4E 102
+dbline 50 106
+dbline 51 10A
+dbline 51 10A
+dbline 52 110
+dbline 53 118
+dbline 56 11C
+dbline 57 11E
+dbline 58 122
+dbline FFFFFFFE 124
+dbline 0 124
+S _twi_write Def0012
+S _twi_read Def008C
+S _twi_init Def0000
+T 00 00 22 24 26 BE 8F E0 80 B9 21 B8 22 B8 84 E0
+R 00 00 00 00
+T 0E 00 86 BF 08 95
+R 00 00 00 00
+T 12 00 AA 92 CA 92 A2 2E C0 2E 84 EA 86 BF 26 B6
+R 00 00 00 00
+T 20 00 27 FE FD CF 81 B1 88 7F 88 30 11 F0 01 E0
+R 00 00 00 00
+T 2E 00 2B C0 80 ED 83 B9 84 E8 86 BF 26 B6 27 FE
+R 00 00 00 00
+T 3C 00 FD CF 81 B1 88 7F 88 31 11 F0 01 E0 1E C0
+R 00 00 00 00
+T 4A 00 C3 B8 84 E8 86 BF 26 B6 27 FE FD CF 81 B1
+R 00 00 00 00
+T 58 00 88 7F 88 32 11 F0 01 E0 12 C0 A3 B8 84 E8
+R 00 00 00 00
+T 66 00 86 BF 26 B6 27 FE FD CF 81 B1 88 7F 88 32
+R 00 00 00 00
+T 74 00 11 F0 01 E0 06 C0 84 E9 86 BF 0A E0
+R 00 00 00 00
+T 80 00 0E 94 00 00 00 27 C9 90 A9 90 08 95
+R 00 00 00 00 12 04 00 00
+T 8C 00 AA 92 84 EA 86 BF 26 B6 27 FE FD CF 81 B1
+R 00 00 00 00
+T 9A 00 88 7F 88 30 11 F0 01 E0 40 C0 80 ED 83 B9
+R 00 00 00 00
+T A8 00 84 E8 86 BF 26 B6 27 FE FD CF 81 B1 88 7F
+R 00 00 00 00
+T B6 00 88 31 11 F0 01 E0 33 C0 03 B9 84 E8 86 BF
+R 00 00 00 00
+T C4 00 26 B6 27 FE FD CF 81 B1 88 7F 88 32 11 F0
+R 00 00 00 00
+T D2 00 01 E0 27 C0 84 EA 86 BF 26 B6 27 FE FD CF
+R 00 00 00 00
+T E0 00 81 B1 88 7F 80 31 11 F0 01 E0 1C C0 81 ED
+R 00 00 00 00
+T EE 00 83 B9 84 E8 86 BF 26 B6 27 FE FD CF 81 B1
+R 00 00 00 00
+T FC 00 88 7F 80 34 11 F0 01 E0 0F C0 84 E8 86 BF
+R 00 00 00 00
+T 0A 01 26 B6 27 FE FD CF 81 B1 88 7F 88 35 11 F0
+R 00 00 00 00
+T 18 01 01 E0 04 C0 A3 B0 84 E9 86 BF 0A 2D A9 90
+R 00 00 00 00
+T 26 01 08 95
+R 00 00 00 00

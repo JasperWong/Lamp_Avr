@@ -1,0 +1,14 @@
+[Files]
+delay.c
+main.c
+MPU_6050.c
+sent.c
+twi.c
+usart.c
+[Headers]
+delay.h
+MPU_6050.h
+sent.h
+twi.h
+usart.h
+[Documents]

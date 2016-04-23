@@ -1,0 +1,445 @@
+                        .module twi.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile twi.c
+ 0000                   .dbfile F:\Project\twi.c
+ 0000                   .dbfunc e twi_init _twi_init fV
+                        .even
+ 0000           _twi_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 6
+ 0000           ; #include"twi.h"
+ 0000           ; 
+ 0000           ; //int change[5];
+ 0000           ; 
+ 0000           ; void twi_init(void)
+ 0000           ; {
+ 0000                   .dbline 7
+ 0000           ;       TWCR=0X00;
+ 0000 2224              clr R2
+ 0002 26BE              out 0x36,R2
+ 0004                   .dbline 8
+ 0004           ;       TWBR=0X0F;
+ 0004 8FE0              ldi R24,15
+ 0006 80B9              out 0x0,R24
+ 0008                   .dbline 9
+ 0008           ;     TWSR=0X00;
+ 0008 21B8              out 0x1,R2
+ 000A                   .dbline 10
+ 000A           ;       TWAR=0X00;
+ 000A 22B8              out 0x2,R2
+ 000C                   .dbline 11
+ 000C           ;       TWCR=(1<<TWEN);
+ 000C 84E0              ldi R24,4
+ 000E 86BF              out 0x36,R24
+ 0010                   .dbline -2
+ 0010           L1:
+ 0010                   .dbline 0 ; func end
+ 0010 0895              ret
+ 0012                   .dbend
+ 0012                   .dbfunc e twi_write _twi_write fc
+ 0012           ;         W_DATA -> R10
+ 0012           ;      W_ADDRESS -> R12
+                        .even
+ 0012           _twi_write::
+ 0012 AA92              st -y,R10
+ 0014 CA92              st -y,R12
+ 0016 A22E              mov R10,R18
+ 0018 C02E              mov R12,R16
+ 001A                   .dbline -1
+ 001A                   .dbline 24
+ 001A           ;       //DDRC|=0X10;
+ 001A           ;       //TWCR=0x94;
+ 001A           ;       /*DDRD|=0X04;
+ 001A           ;       PORTD|=0X04;
+ 001A           ;       EICRA=0X02;                             //INT0低电平触发
+ 001A           ;       EIMSK=0X01;                             //使能INT0
+ 001A           ;       EIFR=0X01;
+ 001A           ;       SREG=0X80;                              //使能全局中断
+ 001A           ;       PORTD&=~0X04;*/
+ 001A           ; }
+ 001A           ; 
+ 001A           ; uchar twi_write(uchar W_ADDRESS,uchar W_DATA)
+ 001A           ; {
+ 001A                   .dbline 25
+ 001A           ;       START();                                                                                //TWI启动
+ 001A 84EA              ldi R24,164
+ 001C 86BF              out 0x36,R24
+ 001E           L3:
+ 001E                   .dbline 26
+ 001E           ;       WAIT();
+ 001E           L4:
+ 001E                   .dbline 26
+ 001E 26B6              in R2,0x36
+ 0020 27FE              sbrs R2,7
+ 0022 FDCF              rjmp L3
+ 0024           X0:
+ 0024                   .dbline 27
+ 0024           ;       if(SATUS()!=_START)
+ 0024 81B1              in R24,0x1
+ 0026 887F              andi R24,248
+ 0028 8830              cpi R24,8
+ 002A 11F0              breq L6
+ 002C           X1:
+ 002C                   .dbline 28
+ 002C           ;       return TRUE;
+ 002C 01E0              ldi R16,1
+ 002E 2BC0              xjmp L2
+ 0030           L6:
+ 0030                   .dbline 30
+ 0030           ;       
+ 0030           ;       TWI_WRITE(W_MPU6050_ADDR);                                              //写MPU6050地址
+ 0030                   .dbline 30
+ 0030 80ED              ldi R24,208
+ 0032 83B9              out 0x3,R24
+ 0034                   .dbline 30
+ 0034 84E8              ldi R24,132
+ 0036 86BF              out 0x36,R24
+ 0038                   .dbline 30
+ 0038                   .dbline 30
+ 0038           L8:
+ 0038                   .dbline 31
+ 0038           ;       WAIT();
+ 0038           L9:
+ 0038                   .dbline 31
+ 0038 26B6              in R2,0x36
+ 003A 27FE              sbrs R2,7
+ 003C FDCF              rjmp L8
+ 003E           X2:
+ 003E                   .dbline 32
+ 003E           ;       if(SATUS()!=MT_SLA_ACK)
+ 003E 81B1              in R24,0x1
+ 0040 887F              andi R24,248
+ 0042 8831              cpi R24,24
+ 0044 11F0              breq L11
+ 0046           X3:
+ 0046                   .dbline 33
+ 0046           ;       return TRUE;
+ 0046 01E0              ldi R16,1
+ 0048 1EC0              xjmp L2
+ 004A           L11:
+ 004A                   .dbline 35
+ 004A           ;       
+ 004A           ;       TWI_WRITE(W_ADDRESS);                              //写6050相应寄存器地址
+ 004A                   .dbline 35
+ 004A C3B8              out 0x3,R12
+ 004C                   .dbline 35
+ 004C 84E8              ldi R24,132
+ 004E 86BF              out 0x36,R24
+ 0050                   .dbline 35
+ 0050                   .dbline 35
+ 0050           L13:
+ 0050                   .dbline 36
+ 0050           ;     WAIT();
+ 0050           L14:
+ 0050                   .dbline 36
+ 0050 26B6              in R2,0x36
+ 0052 27FE              sbrs R2,7
+ 0054 FDCF              rjmp L13
+ 0056           X4:
+ 0056                   .dbline 37
+ 0056           ;     if(SATUS()!=MT_DATA_ACK) 
+ 0056 81B1              in R24,0x1
+ 0058 887F              andi R24,248
+ 005A 8832              cpi R24,40
+ 005C 11F0              breq L16
+ 005E           X5:
+ 005E                   .dbline 38
+ 005E           ;       return TRUE;
+ 005E 01E0              ldi R16,1
+ 0060 12C0              xjmp L2
+ 0062           L16:
+ 0062                   .dbline 40
+ 0062           ;       
+ 0062           ;       TWI_WRITE(W_DATA);                                                      //写数据到 6050相应寄存器
+ 0062                   .dbline 40
+ 0062 A3B8              out 0x3,R10
+ 0064                   .dbline 40
+ 0064 84E8              ldi R24,132
+ 0066 86BF              out 0x36,R24
+ 0068                   .dbline 40
+ 0068                   .dbline 40
+ 0068           L18:
+ 0068                   .dbline 41
+ 0068           ;       WAIT();
+ 0068           L19:
+ 0068                   .dbline 41
+ 0068 26B6              in R2,0x36
+ 006A 27FE              sbrs R2,7
+ 006C FDCF              rjmp L18
+ 006E           X6:
+ 006E                   .dbline 42
+ 006E           ;       if(SATUS()!=MT_DATA_ACK)
+ 006E 81B1              in R24,0x1
+ 0070 887F              andi R24,248
+ 0072 8832              cpi R24,40
+ 0074 11F0              breq L21
+ 0076           X7:
+ 0076                   .dbline 43
+ 0076           ;       return TRUE;
+ 0076 01E0              ldi R16,1
+ 0078 06C0              xjmp L2
+ 007A           L21:
+ 007A                   .dbline 45
+ 007A           ;       
+ 007A           ;       STOP();                                                                                 //TWI停止
+ 007A 84E9              ldi R24,148
+ 007C 86BF              out 0x36,R24
+ 007E                   .dbline 46
+ 007E           ;       delay_nms(10);
+ 007E 0AE0              ldi R16,10
+ 0080 0E940000          xcall _delay_nms
+ 0084                   .dbline 47
+ 0084           ;       return FALSE;
+ 0084 0027              clr R16
+ 0086                   .dbline -2
+ 0086           L2:
+ 0086                   .dbline 0 ; func end
+ 0086 C990              ld R12,y+
+ 0088 A990              ld R10,y+
+ 008A 0895              ret
+ 008C                   .dbsym r W_DATA 10 c
+ 008C                   .dbsym r W_ADDRESS 12 c
+ 008C                   .dbend
+ 008C                   .dbfunc e twi_read _twi_read fc
+ 008C           ;           temp -> R10
+ 008C           ;      W_ADDRESS -> R16
+                        .even
+ 008C           _twi_read::
+ 008C AA92              st -y,R10
+ 008E                   .dbline -1
+ 008E                   .dbline 53
+ 008E           ;       
+ 008E           ; }
+ 008E           ; 
+ 008E           ; 
+ 008E           ; uchar twi_read(uchar W_ADDRESS)
+ 008E           ; {
+ 008E                   .dbline 55
+ 008E           ;       uchar temp;
+ 008E           ;       START();                                           //TWI启动
+ 008E 84EA              ldi R24,164
+ 0090 86BF              out 0x36,R24
+ 0092           L24:
+ 0092                   .dbline 56
+ 0092           ;       WAIT();
+ 0092           L25:
+ 0092                   .dbline 56
+ 0092 26B6              in R2,0x36
+ 0094 27FE              sbrs R2,7
+ 0096 FDCF              rjmp L24
+ 0098           X8:
+ 0098                   .dbline 57
+ 0098           ;     if (SATUS()!=_START) 
+ 0098 81B1              in R24,0x1
+ 009A 887F              andi R24,248
+ 009C 8830              cpi R24,8
+ 009E 11F0              breq L27
+ 00A0           X9:
+ 00A0                   .dbline 58
+ 00A0           ;       return TRUE;      
+ 00A0 01E0              ldi R16,1
+ 00A2 40C0              xjmp L23
+ 00A4           L27:
+ 00A4                   .dbline 60
+ 00A4           ;     
+ 00A4           ;     TWI_WRITE(W_MPU6050_ADDR); //写 MPU6050地址和写方式
+ 00A4                   .dbline 60
+ 00A4 80ED              ldi R24,208
+ 00A6 83B9              out 0x3,R24
+ 00A8                   .dbline 60
+ 00A8 84E8              ldi R24,132
+ 00AA 86BF              out 0x36,R24
+ 00AC                   .dbline 60
+ 00AC                   .dbline 60
+ 00AC           L29:
+ 00AC                   .dbline 61
+ 00AC           ;     WAIT(); 
+ 00AC           L30:
+ 00AC                   .dbline 61
+ 00AC 26B6              in R2,0x36
+ 00AE 27FE              sbrs R2,7
+ 00B0 FDCF              rjmp L29
+ 00B2           X10:
+ 00B2                   .dbline 62
+ 00B2           ;     if (SATUS()!=MT_SLA_ACK) 
+ 00B2 81B1              in R24,0x1
+ 00B4 887F              andi R24,248
+ 00B6 8831              cpi R24,24
+ 00B8 11F0              breq L32
+ 00BA           X11:
+ 00BA                   .dbline 63
+ 00BA           ;       return TRUE;    
+ 00BA 01E0              ldi R16,1
+ 00BC 33C0              xjmp L23
+ 00BE           L32:
+ 00BE                   .dbline 65
+ 00BE           ;     
+ 00BE           ;       TWI_WRITE(W_ADDRESS);      //写 MPU6050相应寄存器地址
+ 00BE                   .dbline 65
+ 00BE 03B9              out 0x3,R16
+ 00C0                   .dbline 65
+ 00C0 84E8              ldi R24,132
+ 00C2 86BF              out 0x36,R24
+ 00C4                   .dbline 65
+ 00C4                   .dbline 65
+ 00C4           L34:
+ 00C4                   .dbline 66
+ 00C4           ;     WAIT();
+ 00C4           L35:
+ 00C4                   .dbline 66
+ 00C4 26B6              in R2,0x36
+ 00C6 27FE              sbrs R2,7
+ 00C8 FDCF              rjmp L34
+ 00CA           X12:
+ 00CA                   .dbline 67
+ 00CA           ;     if (SATUS()!=MT_DATA_ACK) 
+ 00CA 81B1              in R24,0x1
+ 00CC 887F              andi R24,248
+ 00CE 8832              cpi R24,40
+ 00D0 11F0              breq L37
+ 00D2           X13:
+ 00D2                   .dbline 68
+ 00D2           ;       return TRUE;
+ 00D2 01E0              ldi R16,1
+ 00D4 27C0              xjmp L23
+ 00D6           L37:
+ 00D6                   .dbline 70
+ 00D6           ;     
+ 00D6           ;     START();                         //TWI重新启动
+ 00D6 84EA              ldi R24,164
+ 00D8 86BF              out 0x36,R24
+ 00DA           L39:
+ 00DA                   .dbline 71
+ 00DA           ;     WAIT();
+ 00DA           L40:
+ 00DA                   .dbline 71
+ 00DA 26B6              in R2,0x36
+ 00DC 27FE              sbrs R2,7
+ 00DE FDCF              rjmp L39
+ 00E0           X14:
+ 00E0                   .dbline 72
+ 00E0           ;     if (SATUS()!=RE_START)  
+ 00E0 81B1              in R24,0x1
+ 00E2 887F              andi R24,248
+ 00E4 8031              cpi R24,16
+ 00E6 11F0              breq L42
+ 00E8           X15:
+ 00E8                   .dbline 73
+ 00E8           ;       return TRUE;
+ 00E8 01E0              ldi R16,1
+ 00EA 1CC0              xjmp L23
+ 00EC           L42:
+ 00EC                   .dbline 75
+ 00EC           ;     
+ 00EC           ;     TWI_WRITE(R_MPU6050_ADDR); //写 MPU6050地址和读方式
+ 00EC                   .dbline 75
+ 00EC 81ED              ldi R24,209
+ 00EE 83B9              out 0x3,R24
+ 00F0                   .dbline 75
+ 00F0 84E8              ldi R24,132
+ 00F2 86BF              out 0x36,R24
+ 00F4                   .dbline 75
+ 00F4                   .dbline 75
+ 00F4           L44:
+ 00F4                   .dbline 76
+ 00F4           ;     WAIT();
+ 00F4           L45:
+ 00F4                   .dbline 76
+ 00F4 26B6              in R2,0x36
+ 00F6 27FE              sbrs R2,7
+ 00F8 FDCF              rjmp L44
+ 00FA           X16:
+ 00FA                   .dbline 77
+ 00FA           ;     if(SATUS()!=MR_SLA_ACK)  
+ 00FA 81B1              in R24,0x1
+ 00FC 887F              andi R24,248
+ 00FE 8034              cpi R24,64
+ 0100 11F0              breq L47
+ 0102           X17:
+ 0102                   .dbline 78
+ 0102           ;       return TRUE;      
+ 0102 01E0              ldi R16,1
+ 0104 0FC0              xjmp L23
+ 0106           L47:
+ 0106                   .dbline 80
+ 0106           ;     
+ 0106           ;     TWI_READ();                  //启动主TWI读方式
+ 0106 84E8              ldi R24,132
+ 0108 86BF              out 0x36,R24
+ 010A           L49:
+ 010A                   .dbline 81
+ 010A           ;     WAIT();
+ 010A           L50:
+ 010A                   .dbline 81
+ 010A 26B6              in R2,0x36
+ 010C 27FE              sbrs R2,7
+ 010E FDCF              rjmp L49
+ 0110           X18:
+ 0110                   .dbline 82
+ 0110           ;     if(SATUS()!=MR_DATA_NOACK)//读完一个数停止接收数据 ，主机接收到不再接收应答信号 ，如果继续接收到应答信号
+ 0110 81B1              in R24,0x1
+ 0112 887F              andi R24,248
+ 0114 8835              cpi R24,88
+ 0116 11F0              breq L52
+ 0118           X19:
+ 0118                   .dbline 83
+ 0118           ;       return TRUE;                      //说明主机继续接收数据则为错误                                                                                                                                                                                                                                                                 
+ 0118 01E0              ldi R16,1
+ 011A 04C0              xjmp L23
+ 011C           L52:
+ 011C                   .dbline 86
+ 011C           ;      
+ 011C           ;     
+ 011C           ;     temp=TWDR;                           //读取 TWI接收数据
+ 011C A3B0              in R10,0x3
+ 011E                   .dbline 87
+ 011E           ;     STOP();                      //TWI停止
+ 011E 84E9              ldi R24,148
+ 0120 86BF              out 0x36,R24
+ 0122                   .dbline 88
+ 0122           ;     return temp;
+ 0122 0A2D              mov R16,R10
+ 0124                   .dbline -2
+ 0124           L23:
+ 0124                   .dbline 0 ; func end
+ 0124 A990              ld R10,y+
+ 0126 0895              ret
+ 0128                   .dbsym r temp 10 c
+ 0128                   .dbsym r W_ADDRESS 16 c
+ 0128                   .dbend
+ 0128           ; }
+ 0128           ; 
+ 0128           ; /*#pragma interrupt_handler intter_flag:2
+ 0128           ; void intter_flag(void)
+ 0128           ; {
+ 0128           ;       lcd_change(change,Get_data(ACCEL_XOUT_H));       
+ 0128           ;       LCD_write_string(0,0,change);
+ 0128           ;       lcd_change(change,Get_data(ACCEL_YOUT_H));       
+ 0128           ;       LCD_write_string(5,0,change);
+ 0128           ;       lcd_change(change,Get_data(ACCEL_ZOUT_H));       
+ 0128           ;       LCD_write_string(10,0,change);
+ 0128           ;       lcd_change(change,Get_data(GYRO_XOUT_H));        
+ 0128           ;       LCD_write_string(0,1,change);
+ 0128           ;       lcd_change(change,Get_data(GYRO_YOUT_H));        
+ 0128           ;       LCD_write_string(5,1,change);
+ 0128           ;       lcd_change(change,twi_read(WHO_AM_I));   
+ 0128           ;       LCD_write_string(10,1,change);
+ 0128           ;       delay_nms(100);
+ 0128           ; }*/
+ 0128           ; /*void main(void)
+ 0128           ; {
+ 0128           ;       uchar temp;
+ 0128           ;       uchar read;
+ 0128           ;       
+ 0128           ;       twi_init();
+ 0128           ;       twi_write(24,0);
+ 0128           ;       read=twi_read(0);
+ 0128           ;       if(read==24)
+ 0128           ;       {
+ 0128           ;               DDRB|=0X01;
+ 0128           ;               PORTB&=~0X01;
+ 0128           ;       }
+ 0128           ;       
+ 0128           ;       while(1);
+ 0128           ; }*/
+ 0128           ; 

@@ -1,0 +1,69 @@
+XL
+H 2 areas B global symbols
+M main.c
+S _delay_nms Ref0000
+S fpint Ref0000
+S fpdiv2 Ref0000
+S int2fp Ref0000
+S _Get_data Ref0000
+S _Usart_init Ref0000
+S _MPU_6050_init Ref0000
+S _USART_Transmit Ref0000
+S lpm32 Ref0000
+S _twi_init Ref0000
+A text size 92 flags 0
+dbfile main.c
+dbfile F:\lamp\Project\ProjectForavr\main.c
+dbfunc e main 0 fV
+dbsym r AX A I
+dbsym r AY 14 I
+dbline FFFFFFFF 0
+dbline 9 0
+dbline C 0
+dbline D 4
+dbline E A
+dbline F E
+dbline 10 14
+dbline 13 1A
+dbline 14 1A
+dbline 15 20
+dbline 16 4C
+dbline 18 78
+dbline 19 80
+dbline 1A 80
+dbline 1C 86
+dbline 1F 88
+dbline 20 88
+dbline 21 8E
+dbline 2C 8E
+dbline 12 8E
+dbline FFFFFFFE 90
+dbline 0 90
+S _main Def0000
+A lit size 4 flags 0
+T 00 00 0E 94 00 00 02 E3 0E 94 00 00 0E 94 00 00
+R 00 00 00 00 12 04 09 00 12 0A 00 00 12 0E 06 00
+T 0E 00 04 EF 0E 94 00 00 0E 94 00 00 3A C0 00 E5
+R 00 00 00 00 12 06 00 00 12 0A 05 00
+T 1C 00 0E 94 00 00 0B E3 0E 94 00 00 0E 94 00 00
+R 00 00 00 00 12 04 00 00 12 0A 04 00 12 0E 03 00
+T 2A 00 18 01 29 01 00 E0 10 E0
+R 00 00 00 00 20 06 01 00 00 00 40 08 01 00 00 00
+T 32 00 0E 94 00 00 3A 93 2A 93 1A 93 0A 93 81 01
+R 00 00 00 00 12 04 08 00
+T 40 00 92 01 0E 94 00 00 0E 94 00 00 58 01 0D E3
+R 00 00 00 00 12 06 02 00 12 0A 01 00
+T 4E 00 0E 94 00 00 0E 94 00 00 18 01 29 01
+R 00 00 00 00 12 04 04 00 12 08 03 00
+T 5A 00 00 E0 10 E0
+R 00 00 00 00 20 02 01 00 00 00 40 04 01 00 00 00
+T 5E 00 0E 94 00 00 3A 93 2A 93 1A 93 0A 93 81 01
+R 00 00 00 00 12 04 08 00
+T 6C 00 92 01 0E 94 00 00 0E 94 00 00 A8 01 06 35
+R 00 00 00 00 12 06 02 00 12 0A 01 00
+T 7A 00 E0 E0 1E 07 24 F4 01 E3 0E 94 00 00 03 C0
+R 00 00 00 00 12 0C 07 00
+T 88 00 00 E3 0E 94 00 00 C5 CF 08 95
+R 00 00 00 00 12 06 07 00
+T 00 00 B8 9E 3B 43
+R 00 00 01 00

@@ -1,0 +1,45 @@
+XL
+H 1 areas 6 global symbols
+M MPU_6050.c
+S push_xgset303C Ref0000
+S _twi_write Ref0000
+S _twi_read Ref0000
+S pop_xgset303C Ref0000
+A text size 52 flags 0
+dbfile MPU_6050.c
+dbfile F:\lamp\Project\ProjectForavr\MPU_6050.c
+dbfunc e MPU_6050_init 0 fV
+dbline FFFFFFFF 0
+dbline 4 0
+dbline 7 0
+dbline B 8
+dbline C 10
+dbline D 18
+dbline E 20
+dbline FFFFFFFE 24
+dbline 0 24
+dbfunc e Get_data 28 fI
+dbsym r L_data A I
+dbsym r H_data C I
+dbsym r REG_Address 14 c
+dbline FFFFFFFF 2E
+dbline 14 2E
+dbline 17 2E
+dbline 18 38
+dbline 19 44
+dbline FFFFFFFE 4E
+dbline 0 4E
+S _Get_data Def0028
+S _MPU_6050_init Def0000
+T 00 00 22 27 0B E6 0E 94 00 00 21 E0 09 E1
+R 00 00 00 00 12 08 01 00
+T 0C 00 0E 94 00 00 26 E0 0A E1 0E 94 00 00 28 E1
+R 00 00 00 00 12 04 01 00 12 0C 01 00
+T 1A 00 0B E1 0E 94 00 00 21 E0 0C E1 0C 94 00 00
+R 00 00 00 00 12 06 01 00 12 0E 01 00
+T 28 00 0E 94 00 00 40 2F 04 2F 0E 94 00 00 C0 2E
+R 00 00 00 00 12 04 00 00 12 0C 02 00
+T 36 00 DD 24 04 2F 0F 5F 0E 94 00 00 A0 2E BB 24
+R 00 00 00 00 12 0A 02 00
+T 44 00 86 01 10 2F 00 27 0A 29 1B 29 0C 94 00 00
+R 00 00 00 00 12 0E 03 00
